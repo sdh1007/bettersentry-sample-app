@@ -31,7 +31,11 @@ export async function listUsers(): Promise<User[]> {
 export async function getUser(id: string): Promise<{ user: string; email: string }> {
   const user = users.find((u) => u.id === id);
 
-  // BUG: No null check — crashes when user is not found
+  // FIX: Added null check — prevents crash when user not found
+  if (!user) {
+    throw new Error("User not found");
+  }
+
   const displayName = user.name.toUpperCase();
 
   return {
